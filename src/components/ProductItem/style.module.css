@@ -1,0 +1,74 @@
+@import '../../variables.css';
+
+.productContainer {
+  position: relative;
+}
+
+.productContainer img {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  border-radius: var(--radius-md);
+  background-color: var(--color-gray-200);
+  object-fit: cover;
+}
+
+.productDescriptionContainer {
+  margin-top: calc(var(--spacing) * 4);
+  display: flex;
+  justify-content: space-between;
+}
+
+.productDescriptionContainer h3 {
+  color: var(--color-gray-700);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+}
+
+.productDescriptionContainer h3 span {
+  position: absolute;
+  inset: calc(var(--spacing) * 0);
+}
+
+.productColour {
+  margin-top: calc(var(--spacing) * 1);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  color: var(--color-gray-500);
+}
+
+.productPrice {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  color: var(--color-gray-900);
+  font-weight: var(--font-weight-medium);
+}
+
+.productQty {
+  margin-top: calc(var(--spacing) * 0.5);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  color: var(--color-gray-500);
+}
+
+.addToCartBtn {
+  cursor: pointer;
+  font-size: var(--text-sm);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  padding-inline: calc(var(--spacing) * 2);
+  padding-block: calc(var(--spacing) * 0.5);
+  margin-top: calc(var(--spacing) * 1);
+  background-color: var(--clr-green-accent);
+  color: var(--color-white);
+}
+
+.addToCartBtn:hover {
+  background-color: var(--clr-green-accent-hover);
+}
+
+@media (width >=64rem) {
+  .productContainer img {
+    aspect-ratio: auto;
+    height: calc(var(--spacing) * 80);
+  }
+}

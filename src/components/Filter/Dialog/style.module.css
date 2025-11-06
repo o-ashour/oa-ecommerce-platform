@@ -1,0 +1,43 @@
+@import '../../../variables.css';
+
+.dialog {
+  position: absolute;
+  z-index: 10;
+  margin-top: calc(var(--spacing) * 2);
+  width: calc(var(--spacing) * 40);
+  border-radius: var(--radius-md);
+  background-color: var(--color-white);
+  right: calc(var(--spacing) * 0);
+  position: absolute;
+  list-style: none;
+  text-align: right;
+  padding-inline-start: initial;
+}
+
+.dialogInnerWrapper {
+  padding-block: calc(var(--spacing) * 1);
+}
+
+.dialogBtn {
+  display: block;
+  padding-inline: calc(var(--spacing) * 4);
+  padding-block: calc(var(--spacing) * 2);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  color: var(--color-gray-500);
+  font-weight: initial;
+  background-color: transparent;
+  border: 1px solid transparent;
+}
+
+.dialogBtnActive {
+  display: block;
+  padding-inline: calc(var(--spacing) * 4);
+  padding-block: calc(var(--spacing) * 2);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-900);
+  background-color: transparent;
+  border: 1px solid transparent;
+}

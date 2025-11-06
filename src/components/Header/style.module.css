@@ -1,0 +1,8 @@
+@import '../../variables.css';
+
+.header {
+  position: absolute;
+  z-index: 50;
+  top: calc(var(--spacing) * 0);
+  inset-inline: calc(var(--spacing) * 0);
+}

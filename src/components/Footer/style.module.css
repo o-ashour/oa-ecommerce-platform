@@ -1,0 +1,27 @@
+@import '../../variables.css';
+
+.attribution {
+  font-size: 13px;
+  text-align: center;
+  display: flex;
+  margin-top: calc(var(--spacing) * 5);
+  padding-inline: calc(var(--spacing) * 6);
+  justify-content: space-between;
+  align-items: flex-end;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  margin-bottom: 1.5em;
+}
+
+@media (width >=40rem) {
+  .attribution {
+    padding-inline: calc(var(--spacing) * 8);
+  }
+}
+
+@media (width >=64rem) {
+  .attribution small {
+    flex: 1;
+  }
+}

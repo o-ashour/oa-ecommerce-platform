@@ -1,0 +1,52 @@
+@import '../../variables.css';
+
+.aboutOuterWrapper {
+  background-color: var(--color-white);
+  padding-block: calc(var(--spacing) * 16);
+}
+
+.aboutInnerWrapper {
+  display: flex;
+  flex-direction: column;
+  margin-inline: auto;
+  max-width: var(--container-7xl);
+  gap: calc(var(--spacing) * 10);
+  padding-inline: calc(var(--spacing) * 6);
+}
+
+.aboutMissionWrapper {
+  max-width: var(--container-xl);
+}
+
+.aboutMissionWrapper h1 {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--text-3xl--line-height);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-gray-900);
+}
+
+.aboutMissionWrapper p {
+  margin-top: calc(var(--spacing) * 6);
+  font-size: var(--text-lg);
+  line-height: calc(var(--spacing) * 8);
+  color: var(--color-gray-600);
+}
+
+@media (width >=40rem) {
+  .aboutOuterWrapper {
+    padding-block: calc(var(--spacing) * 32);
+  }
+
+  .aboutMissionWrapper h1 {
+    font-size: var(--text-4xl);
+    line-height: var(--text-4xl--line-height);
+  }
+}
+
+@media (width >=64rem) {
+  .aboutInnerWrapper {
+    padding-inline: calc(var(--spacing) * 8);
+    flex-direction: row;
+  }
+}

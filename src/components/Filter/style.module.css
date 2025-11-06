@@ -1,0 +1,34 @@
+@import '../../variables.css';
+
+.filterWrapper {
+  position: relative;
+  text-align: right;
+}
+
+.filterTitleBtn {
+  display: inline-flex;
+  justify-content: center;
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-700);
+  line-height: var(--text-sm--line-height);
+  background-color: transparent;
+  border: 1px solid transparent;
+}
+
+.filterTitleBtn:hover {
+  color: var(--text-gray-900);
+}
+
+.filterTitleBtn svg {
+  margin-right: calc(var(--spacing) * -1);
+  margin-left: calc(var(--spacing) * 1);
+  width: calc(var(--spacing) * 5);
+  height: calc(var(--spacing) * 5);
+  flex-shrink: 0;
+  color: var(--color-gray-400);
+}
+
+.filterTitleBtn svg:hover {
+  color: var(--color-gray-500);
+}

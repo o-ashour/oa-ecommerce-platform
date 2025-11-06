@@ -1,0 +1,7 @@
+@import '../../variables.css';
+
+.faqList {
+  width: 100%;
+  list-style-type: none;
+  padding-inline-start: initial;
+}

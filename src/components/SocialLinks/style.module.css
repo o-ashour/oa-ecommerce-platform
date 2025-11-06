@@ -1,0 +1,31 @@
+@import '../../variables.css';
+
+.socialLinks {
+  display: flex;
+  gap: 10px;
+  list-style-type: none;
+  padding-inline-start: initial;
+}
+
+.socialLinks li svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--color-gray-800);
+}
+
+.socialLinks li svg:hover {
+  fill: var(--clr-green-accent-hover);
+}
+
+@media (width >=40rem) {
+  .socialLinks li svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@media (width >=64rem) {
+  .socialLinks {
+    gap: calc(var(--spacing) * 3);
+  }
+}

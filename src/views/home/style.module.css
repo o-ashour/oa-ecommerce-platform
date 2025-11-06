@@ -1,0 +1,104 @@
+@import '../../variables.css';
+
+.collectionPreview {
+  position: relative;
+  margin-inline: auto;
+  max-width: var(--container-7xl);
+  overflow: hidden;
+  padding-block: calc(var(--spacing) * 3);
+  margin-bottom: calc(var(--spacing) * 14);
+}
+
+.collectionPreview .outerWrapper {
+  padding-top: calc(var(--spacing) * 10);
+  padding-bottom: calc(var(--spacing) * 80);
+}
+
+.collectionPreview .innerWrapper {
+  position: relative;
+  margin-inline: auto;
+  max-width: var(--container-7xl);
+  padding-inline: calc(var(--spacing) * 4);
+}
+
+.collectionPreview .description h1 {
+  font-size: var(--text-4xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-gray-900);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--text-4xl--line-height);
+}
+
+.collectionPreview .description p {
+  margin-top: calc(var(--spacing) * 4);
+  font-size: var(--text-xl);
+  color: var(--color-gray-500);
+  line-height: var(--text-xl--line-height);
+}
+
+hr {
+  margin-top: calc(var(--spacing) * 16);
+  color: var(--color-gray-200);
+}
+
+.shopCollectionBtn {
+  cursor: pointer;
+  display: inline-block;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  background-color: var(--clr-green-accent);
+  padding-inline: calc(var(--spacing) * 8);
+  padding-block: calc(var(--spacing) * 3);
+  text-align: center;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-white);
+  cursor: pointer;
+}
+
+.shopCollectionBtn:hover {
+  background-color: var(--clr-green-accent-hover);
+}
+
+.imageGridOuterContainer {
+  margin-top: calc(var(--spacing) * 10);
+}
+
+@media (width >=40rem) {
+  .collectionPreview {
+    padding-block: calc(var(--spacing) * 32);
+  }
+
+  .collectionPreview .outerWrapper {
+    padding-top: calc(var(--spacing) * 24);
+    padding-bottom: calc(var(--spacing) * 40);
+  }
+
+  .collectionPreview .innerWrapper {
+    position: static;
+    padding-inline: calc(var(--spacing) * 6);
+  }
+
+  .collectionPreview .description {
+    max-width: var(--container-lg);
+  }
+
+  .collectionPreview .description h1 {
+    font-size: var(--text-6xl);
+    line-height: var(--text-4xl--line-height);
+  }
+}
+
+@media (width >=64rem) {
+  .collectionPreview .outerWrapper {
+    padding-top: calc(var(--spacing) * 40);
+    padding-bottom: calc(var(--spacing) * 48);
+  }
+
+  .collectionPreview .innerWrapper {
+    padding-inline: calc(var(--spacing) * 8);
+  }
+
+  hr {
+    margin-inline: calc(var(--spacing) * 20);
+  }
+}
