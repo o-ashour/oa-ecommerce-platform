@@ -10,7 +10,7 @@ const navigation = [
   { name: "About", viewName: "about" },
 ];
 
-function Nav({ setView }) {
+function Nav({ setView, totalNItemsInCart }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -39,7 +39,7 @@ function Nav({ setView }) {
           <button onClick={() => setView("cart")}>
             <ShoppingBagIcon />
           </button>
-          <span>0</span>
+          <span>{totalNItemsInCart}</span>
         </div>
       </nav>
       <NavDialog

@@ -5,8 +5,10 @@ import Cart from "./views/cart";
 import Header from "./components/Header";
 import Home from "./views/home";
 import Footer from "./components/Footer";
+import json from "./data.json";
 
 // TODO:
+// Handle empty cart state for cart view
 // Get feedback
 // Improve About page
 // Check extra padding on container/wrapper
@@ -20,21 +22,64 @@ import Footer from "./components/Footer";
 // get rest of product images for shop
 // replace hero icons with local assets
 
+const dummyCart = [
+  {
+    id: 1,
+    name: "Classic White T-Shirt",
+    category: "Shirts",
+    price: 19.99,
+    stock: 10,
+    image: "",
+  },
+  {
+    id: 2,
+    name: "Blue Denim Jeans",
+    category: "Pants",
+    price: 49.99,
+    stock: 8,
+    image: "",
+  },
+  {
+    id: 3,
+    name: "Red Hoodie",
+    category: "Sweaters",
+    price: 39.99,
+    stock: 7,
+    image: "",
+  },
+];
+
 export default function App() {
   const [view, setView] = useState("home");
+  const [cartItems, setCartItems] = useState([]);
+
+  const initialData = json || dummyCart;
+  const [data, setData] = useState(initialData);
+
+  let totalNItemsInCart = 0;
+
+  // maybe try Array.prototype.reduce() here
+  cartItems.forEach(item => totalNItemsInCart = totalNItemsInCart + item.qtyInCart);
+
+  // console.log('data:', data, 'cart:', cartItems)
 
   return (
     <div style={{ minHeight: "100vh", position: "relative" }}>
       <div className="home-container">
-        <Header setView={setView} />
+        <Header setView={setView} totalNItemsInCart={totalNItemsInCart} />
 
         <div className="main-container">
           {view === "shop" ? (
-            <Shop />
+            <Shop cartItems={cartItems} setCartItems={setCartItems} data={data} setData={setData} />
           ) : view === "about" ? (
             <About />
           ) : view === "cart" ? (
-            <Cart />
+            <Cart
+              cartItems={cartItems}
+              setCartItems={setCartItems}
+              data={data}
+              setData={setData}
+            />
           ) : (
             <Home setView={setView} />
           )}

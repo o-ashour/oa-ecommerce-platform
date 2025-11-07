@@ -1,10 +1,33 @@
-import json from "../../data.json";
 import imgUrl from "../../assets/images/product_images/Veste en denim classique.png";
 import styles from "./style.module.css";
 
-const products = [json[0], json[1], json[2]];
+export default function Cart({ cartItems, setCartItems, data, setData }) {
+  let subtotal = 0.0;
+  cartItems.forEach(
+    (item) => (subtotal = subtotal + item.price * item.qtyInCart)
+  );
+  const roundedSubtotal = Math.round(subtotal).toFixed(2);
 
-export default function Cart() {
+  function handleClick(cartItemToRemove) {
+    // let updatedCart = [];
+    // let foundItem = {};
+    // for (let i = 0; i < cartItems.length; i++) {
+    //   if (cartItems[i].id === cartItemToRemove.id) {
+    //     foundItem = { ...cartItems[i] };
+    //   }
+    // }
+    // if (foundItem.qtyInCart === 1) {
+    //   const updatedCart = cartItems.filter(item => item.id !== foundItem.id);
+    //   setCartItems(updatedCart)
+    // }
+
+    // const updatedCart = [
+    //   ...cartItems,
+    //   { ...foundItem, qtyInCart: foundItem.qtyInCart - 1 },
+    // ];
+    console.log('remove item')
+  }
+
   return (
     <div className={styles.cartOuterContainer}>
       <div className={styles.cartInnerContainer}>
@@ -18,25 +41,30 @@ export default function Cart() {
               <div className={styles.productItemsSection}>
                 <div className={styles.productItemsWrapper}>
                   <ul>
-                    {products.map((product) => (
-                      <li key={product.id}>
+                    {cartItems.map((cartItem) => (
+                      <li key={cartItem.id}>
                         <div className={styles.productItemImageWrapper}>
                           <img alt="product image" src={imgUrl} />
                         </div>
 
                         <div className={styles.productItemDetailsWrapper}>
                           <div className={styles.productItemDetailsTop}>
-                            <h3>{product.name}</h3>
-                            <p>${product.price}</p>
+                            <h3>{cartItem.name}</h3>
+                            <p>${cartItem.price}</p>
                           </div>
                           <div className={styles.productItemDetailsBottom}>
-                            <p>Qty 1</p>
+                            <p>Qty {cartItem.qtyInCart}</p>
                             <div
                               className={
                                 styles.productItemDetailsBottomBtnWrapper
                               }
                             >
-                              <button type="button">Remove</button>
+                              <button
+                                onClick={() => handleClick(cartItem)}
+                                type="button"
+                              >
+                                Remove
+                              </button>
                             </div>
                           </div>
                         </div>
@@ -50,7 +78,7 @@ export default function Cart() {
             <div className={styles.cartFinalizeWrapper}>
               <div className={styles.cartSubtotalWrapper}>
                 <p>Subtotal</p>
-                <p>$262.00</p>
+                <p>${roundedSubtotal}</p>
               </div>
               <p className={styles.cartSubtotalSubtitle}>
                 Shipping and taxes calculated at checkout.

@@ -6,7 +6,7 @@ function SocialLinks() {
     <ul className={styles.socialLinks}>
       {SocialLinksConfig.map((socialLink) => {
         return (
-          <li>
+          <li key={socialLink.id}>
             <a href={socialLink.url}>{socialLink.icon}</a>
           </li>
         );
