@@ -3,12 +3,19 @@ import imgUrl from "../../assets/images/product_images/Veste en denim classique.
 import ProductItem from "../../components/ProductItem";
 import Filter from "../../components/Filter";
 import styles from "./style.module.css";
+import { useState } from "react";
 
 function Shop({ cartItems, setCartItems, data, setData }) {
+  const [filteredData, setFilteredData] = useState(data);
+
+  const handleChange = (e) => {
+    const filteredArr = data.filter(item => item.name.toLowerCase().includes(e.target.value.trim().toLowerCase()))
+    setFilteredData(filteredArr);
+  }
   return (
     <div className={styles.shopContainerOuter}>
       <div className={styles.productFilterWrapper}>
-        <input type="text" placeholder="filter products by name" />
+        <input type="text" placeholder="filter products by name" onChange={handleChange}/>
         <div className={styles.productFilterInnerWrapper}>
           <Filter name="category" />
           <Filter name="sortBy" />
@@ -16,7 +23,7 @@ function Shop({ cartItems, setCartItems, data, setData }) {
       </div>
 
       <div className={styles.shopContainerInner}>
-        {data.map((product) => (
+        {filteredData.map((product) => (
           <ProductItem
             key={product.id}
             productId={product.id}
