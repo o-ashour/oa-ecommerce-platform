@@ -37,9 +37,10 @@ export default function Cart({ cartItems, setCartItems, data, setData }) {
         { ...foundItem, qtyInCart: foundItem.qtyInCart - 1 },
       ];
     }
-    updatedCart.sort((a, b) => a.id > b.id);
+    const sortedCart = updatedCart.sort((a, b) => a.id > b.id);
     updatedData.sort((a, b) => a.id > b.id);
-    setCartItems(updatedCart);
+    console.log('updatedCart:', updatedCart, 'sortedCart:', sortedCart)
+    setCartItems(sortedCart);
     setData(updatedData);
   }
 
