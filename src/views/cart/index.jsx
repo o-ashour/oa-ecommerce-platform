@@ -9,23 +9,38 @@ export default function Cart({ cartItems, setCartItems, data, setData }) {
   const roundedSubtotal = Math.round(subtotal).toFixed(2);
 
   function handleClick(cartItemToRemove) {
-    // let updatedCart = [];
-    // let foundItem = {};
-    // for (let i = 0; i < cartItems.length; i++) {
-    //   if (cartItems[i].id === cartItemToRemove.id) {
-    //     foundItem = { ...cartItems[i] };
-    //   }
-    // }
-    // if (foundItem.qtyInCart === 1) {
-    //   const updatedCart = cartItems.filter(item => item.id !== foundItem.id);
-    //   setCartItems(updatedCart)
-    // }
-
-    // const updatedCart = [
-    //   ...cartItems,
-    //   { ...foundItem, qtyInCart: foundItem.qtyInCart - 1 },
-    // ];
-    console.log('remove item')
+    let updatedCart = [];
+    let updatedData = [];
+    let foundItem = {};
+    let foundItemInData = {};
+    for (let i = 0; i < cartItems.length; i++) {
+      if (cartItems[i].id === cartItemToRemove.id) {
+        foundItem = { ...cartItems[i] };
+        break;
+      }
+    }
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].id === cartItemToRemove.id) {
+        foundItemInData = { ...data[i] };
+        break;
+      }
+    }
+    updatedCart = cartItems.filter((item) => item.id !== foundItem.id);
+    updatedData = data.filter((item) => item.id !== foundItemInData.id);
+    updatedData = [
+      ...updatedData,
+      { ...foundItemInData, stock: foundItemInData.stock + 1 },
+    ];
+    if (foundItem.qtyInCart > 1) {
+      updatedCart = [
+        ...updatedCart,
+        { ...foundItem, qtyInCart: foundItem.qtyInCart - 1 },
+      ];
+    }
+    updatedCart.sort((a, b) => a.id > b.id);
+    updatedData.sort((a, b) => a.id > b.id);
+    setCartItems(updatedCart);
+    setData(updatedData);
   }
 
   return (
