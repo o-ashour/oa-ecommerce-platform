@@ -1,4 +1,5 @@
 import styles from "./style.module.css";
+import { sortArray } from "../../views/utils";
 
 function ProductItem({
   productId,
@@ -13,7 +14,6 @@ function ProductItem({
   setData,
   data,
 }) {
-
   const product = {
     id: productId,
     name: productName,
@@ -30,14 +30,16 @@ function ProductItem({
       if (cartItems[i].id === product.id) {
         updatedCart = cartItems.filter((item) => item.id !== product.id);
         updatedCart.push({ ...product, qtyInCart: cartItems[i].qtyInCart + 1 });
-        setCartItems(updatedCart);
+        const sortedUpdatedCart = sortArray(updatedCart);
+        setCartItems(sortedUpdatedCart);
         break;
       }
     }
     if (updatedCart.length < 1) {
       updatedCart = cartItems.filter((item) => item.id !== product.id);
       updatedCart.push({ ...product, qtyInCart: 1 });
-      setCartItems(updatedCart);
+      const sortedUpdatedCart = sortArray(updatedCart);
+      setCartItems(sortedUpdatedCart);
     }
 
     function findIndex() {
