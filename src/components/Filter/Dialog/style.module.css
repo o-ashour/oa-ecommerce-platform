@@ -28,6 +28,7 @@
   font-weight: initial;
   background-color: transparent;
   border: 1px solid transparent;
+  cursor: pointer;
 }
 
 .dialogBtnActive {
@@ -40,4 +41,5 @@
   color: var(--color-gray-900);
   background-color: transparent;
   border: 1px solid transparent;
+  cursor: pointer;
 }

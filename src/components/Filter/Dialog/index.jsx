@@ -1,23 +1,8 @@
-import json from "../../../data.json";
 import styles from "./style.module.css";
 
-const sortOptions = [
-  { name: "Name", current: true },
-  { name: "Price: Low to High", current: false },
-  { name: "Price: High to Low", current: false },
-];
-
-const categoryArr = [];
-json.forEach((element) => categoryArr.push(element.category));
-const newSet = new Set(categoryArr);
-const categories = [{ name: "All", current: true }];
-[...newSet].forEach((category) =>
-  categories.push({ name: category, current: false })
-);
-
-function FilterDialog({ name }) {
+function FilterDialog({ name, handleClick, categories, sortByOptions }) {
   const options = {
-    sortBy: sortOptions,
+    sortBy: sortByOptions,
     category: categories,
   };
 
@@ -27,6 +12,8 @@ function FilterDialog({ name }) {
         {options[name].map((option) => (
           <li key={option.name}>
             <button
+              value={option.name}
+              onClick={handleClick}
               className={
                 option.current ? styles.dialogBtnActive : styles.dialogBtn
               }
