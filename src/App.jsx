@@ -8,6 +8,13 @@ import Footer from "./components/Footer";
 import json from "./data.json";
 
 // TODO:
+// Add remaining product images
+// Replace placeholder text (i.e. lorem) with actual content 
+// fix filter menus so click away closes them, and they aren't both open at once
+// Decide about when to change product stock value: on 'Add to Cart' or 'checkout'
+// Handle states for successful and unsuccessful checkouts (i.e. notify user)
+// Rounding in subtotal in cart page should be
+////// to nearest hundredth (i.e. cent)
 // Handle empty cart state for cart view
 // Get feedback
 // Improve About page
@@ -19,7 +26,6 @@ import json from "./data.json";
 // letter-spacing variable
 // unify values : i.e. all pixels, or all em/rem, or all variables in css
 // switch out oklch with hsl
-// get rest of product images for shop
 // replace hero icons with local assets
 
 const dummyCart = [
@@ -79,6 +85,7 @@ export default function App() {
               setCartItems={setCartItems}
               data={data}
               setData={setData}
+              setView={setView}
             />
           ) : (
             <Home setView={setView} />
