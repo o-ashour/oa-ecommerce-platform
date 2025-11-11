@@ -2,7 +2,7 @@ import imgUrl from "../../assets/images/product_images/Veste en denim classique.
 import styles from "./style.module.css";
 import { sortArray } from "../utils";
 
-export default function Cart({ cartItems, setCartItems, data, setData }) {
+export default function Cart({ cartItems, setCartItems, data, setData, setView }) {
   let subtotal = 0.0;
   cartItems.forEach(
     (item) => (subtotal = subtotal + item.price * item.qtyInCart)
@@ -43,6 +43,11 @@ export default function Cart({ cartItems, setCartItems, data, setData }) {
     const sortedUpdatedData = sortArray(updatedData);
     setCartItems(sortedUpdatedCart);
     setData(sortedUpdatedData);
+  }
+
+  const handleCheckout = () => {
+    setCartItems([]);
+    setData(prevVal => prevVal.filter(item => item.stock > 0))
   }
 
   return (
@@ -101,12 +106,12 @@ export default function Cart({ cartItems, setCartItems, data, setData }) {
                 Shipping and taxes calculated at checkout.
               </p>
               <div className={styles.checkoutBtnWrapper}>
-                <button>Checkout</button>
+                <button onClick={handleCheckout}>Checkout</button>
               </div>
               <div className={styles.continueShoppingBtnWrapper}>
                 <p>
                   or{" "}
-                  <button type="button">
+                  <button type="button" onClick={() => setView('shop')}>
                     Continue Shopping
                     <span> &rarr;</span>
                   </button>
