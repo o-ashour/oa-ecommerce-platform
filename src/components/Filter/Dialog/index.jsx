@@ -9,8 +9,8 @@ function FilterDialog({ name, handleClick, categories, sortByOptions }) {
   return (
     <ul className={styles.dialog}>
       <div className={styles.dialogInnerWrapper}>
-        {options[name].map((option) => (
-          <li key={option.name}>
+        {options[name].map((option, idx) => (
+          <li key={idx}>
             <button
               value={option.name}
               onClick={handleClick}

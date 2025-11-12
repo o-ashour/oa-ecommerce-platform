@@ -23,8 +23,6 @@ function Nav({ setView, totalNItemsInCart }) {
         </div>
         <div className={styles.mainNavWrapper}>
           <div className={styles.logoWrapper}>
-            {/* does this need to be a button and link to home ? */}
-            {/* there is already a home item in nav menu */}
             <button onClick={() => setView("home")}>O&A</button>
           </div>
           <div className={styles.menuLarge}>

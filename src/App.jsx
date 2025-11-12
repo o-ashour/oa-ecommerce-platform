@@ -43,8 +43,8 @@ export default function App() {
   const [cartItems, setCartItems] = useState([]);
   const [showToast, setShowToast] = useState(false);
   const [totalNItemsInCart, setTotalNItemsInCart] = useState(0);
-  const [data, setData] = useState(initialData);
   const initialData = json;
+  const [data, setData] = useState(initialData);
 
   return (
     <div style={{ minHeight: "100vh", position: "relative" }}>

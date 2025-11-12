@@ -1,8 +1,9 @@
 import imgUrl from "../../assets/images/product_images/Veste en denim classique.png";
 import ProductItem from "../../components/ProductItem";
-import Filter from "../../components/Filter";
 import styles from "./style.module.css";
 import { useEffect, useState } from "react";
+import FilterPanel from "../../components/FilterPanel";
+import { getProductCategoriesFromData } from "../utils";
 
 function Shop({
   cartItems,
@@ -14,99 +15,58 @@ function Shop({
   setTotalNItemsInCart,
 }) {
   const [filteredData, setFilteredData] = useState(data);
-  const [categories, setCategories] = useState([]);
   const [filters, setFilters] = useState({
     name: "",
     category: "All",
     sort: "Name",
   });
-
-  const [sortByOptions, setSortByOptions] = useState([
-    { name: "Name", current: true },
-    { name: "Price: Low to High", current: false },
-    { name: "Price: High to Low", current: false },
+  const [categories, setCategories] = useState([
+    { name: "All", current: true },
   ]);
 
-  const handleChange = (e) => {
-    setFilters((prevVal) => {
-      return { ...prevVal, name: e.target.value };
-    });
-  };
-
   useEffect(() => {
-    const categoryArr = [];
-    data.forEach((element) => categoryArr.push(element.category));
-    const newSet = new Set(categoryArr);
-    const categoriesArr = [{ name: "All", current: true }];
-    [...newSet].forEach((category) =>
-      categoriesArr.push({ name: category, current: false })
+    const productCategories = getProductCategoriesFromData(
+      { name: "All", current: true },
+      data
     );
-    setCategories(categoriesArr);
+
+    setCategories(productCategories);
   }, [data]);
 
   useEffect(() => {
+    function sortByComparisonFn(a, b) {
+      if (filters.sort === "Name") {
+        return b.name < a.name;
+      } else if (filters.sort === "Price: Low to High") {
+        return a.price - b.price;
+      } else if (filters.sort === "Price: High to Low") {
+        return b.price - a.price;
+      }
+    }
+    function isNameMatch(item) {
+      return item.name.toLowerCase().includes(filters.name.trim().toLowerCase());
+    }
     let filteredArr = [];
     if (filters.category === "All") {
-      filteredArr = data
-        .filter((item) =>
-          item.name.toLowerCase().includes(filters.name.trim().toLowerCase())
-        )
-        .sort((a, b) => {
-          if (filters.sort === "Name") {
-            return b.name < a.name;
-          } else if (filters.sort === "Price: Low to High") {
-            return a.price - b.price;
-          } else if (filters.sort === "Price: High to Low") {
-            return b.price - a.price;
-          }
-        });
+      filteredArr = data.filter(isNameMatch);
     } else {
-      filteredArr = data
-        .filter(
-          (item) =>
-            item.name
-              .toLowerCase()
-              .includes(filters.name.trim().toLowerCase()) &&
-            item.category === filters.category
-        )
-        .sort((a, b) => {
-          if (filters.sort === "Name") {
-            return b.name < a.name;
-          } else if (filters.sort === "Price: Low to High") {
-            return a.price - b.price;
-          } else if (filters.sort === "Price: High to Low") {
-            return b.price - a.price;
-          }
-        });
+      filteredArr = data.filter(
+        (item) =>
+          isNameMatch(item) &&
+          item.category === filters.category
+      );
     }
-    setFilteredData(filteredArr);
+    setFilteredData(filteredArr.sort(sortByComparisonFn));
   }, [filters, data]);
 
   return (
     <div className={styles.shopContainerOuter}>
-      <div className={styles.productFilterWrapper}>
-        <input
-          type="text"
-          placeholder="filter products by name"
-          onChange={handleChange}
-        />
-        <div className={styles.productFilterInnerWrapper}>
-          <Filter
-            name="category"
-            data={data}
-            categories={categories}
-            setCategories={setCategories}
-            setFilters={setFilters}
-          />
-          <Filter
-            name="sortBy"
-            data={data}
-            sortByOptions={sortByOptions}
-            setSortByOptions={setSortByOptions}
-            setFilters={setFilters}
-          />
-        </div>
-      </div>
+      <FilterPanel
+        setFilters={setFilters}
+        data={data}
+        categories={categories}
+        setCategories={setCategories}
+      />
 
       <div className={styles.shopContainerInner}>
         {filteredData.map((product) => (
