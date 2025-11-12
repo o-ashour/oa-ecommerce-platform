@@ -6,10 +6,11 @@ import Header from "./components/Header";
 import Home from "./views/home";
 import Footer from "./components/Footer";
 import json from "./data.json";
+import CheckIcon from "./components/icons/CheckIcon";
 
 // TODO:
 // Add remaining product images
-// Replace placeholder text (i.e. lorem) with actual content 
+// Replace placeholder text (i.e. lorem) with actual content
 // fix filter menus so click away closes them, and they aren't both open at once
 // Decide about when to change product stock value: on 'Add to Cart' or 'checkout'
 // Handle states for successful and unsuccessful checkouts (i.e. notify user)
@@ -58,6 +59,7 @@ const dummyCart = [
 export default function App() {
   const [view, setView] = useState("home");
   const [cartItems, setCartItems] = useState([]);
+  const [showToast, setShowToast] = useState(false);
 
   const initialData = json || dummyCart;
   const [data, setData] = useState(initialData);
@@ -65,18 +67,37 @@ export default function App() {
   let totalNItemsInCart = 0;
 
   // maybe try Array.prototype.reduce() here
-  cartItems.forEach(item => totalNItemsInCart = totalNItemsInCart + item.qtyInCart);
+  cartItems.forEach(
+    (item) => (totalNItemsInCart = totalNItemsInCart + item.qtyInCart)
+  );
 
   // console.log('data:', data, 'cart:', cartItems)
 
   return (
     <div style={{ minHeight: "100vh", position: "relative" }}>
+      <div className="toast-wrapper">
+        <div
+          className="toast"
+          style={{ top: `${showToast ? "0px" : "-80px"}` }}
+        >
+          <CheckIcon />
+          Added to Cart
+        </div>
+      </div>
+
       <div className="home-container">
         <Header setView={setView} totalNItemsInCart={totalNItemsInCart} />
 
         <div className="main-container">
           {view === "shop" ? (
-            <Shop cartItems={cartItems} setCartItems={setCartItems} data={data} setData={setData} />
+            <Shop
+              cartItems={cartItems}
+              setCartItems={setCartItems}
+              data={data}
+              setData={setData}
+              setShowToast={setShowToast}
+              showToast={showToast}
+            />
           ) : view === "about" ? (
             <About />
           ) : view === "cart" ? (

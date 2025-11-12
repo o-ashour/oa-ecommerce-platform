@@ -13,6 +13,8 @@ function ProductItem({
   setCartItems,
   setData,
   data,
+  setShowToast,
+  showToast,
 }) {
   const product = {
     id: productId,
@@ -40,6 +42,11 @@ function ProductItem({
       updatedCart.push({ ...product, qtyInCart: 1 });
       const sortedUpdatedCart = sortArray(updatedCart);
       setCartItems(sortedUpdatedCart);
+    }
+
+    if (!showToast) {
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3000);
     }
 
     function findIndex() {
