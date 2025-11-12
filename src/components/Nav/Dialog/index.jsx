@@ -30,7 +30,13 @@ function NavDialog({ mobileMenuOpen, setMobileMenuOpen, setView, navigation }) {
           <div className={styles.menuInnerWrapper}>
             <div className={styles.menu}>
               {navigation.map((item) => (
-                <button key={item.name} onClick={() => setView(item.viewName)}>
+                <button
+                  key={item.name}
+                  onClick={() => {
+                    setView(item.viewName);
+                    setMobileMenuOpen(false);
+                  }}
+                >
                   {item.name}
                 </button>
               ))}
