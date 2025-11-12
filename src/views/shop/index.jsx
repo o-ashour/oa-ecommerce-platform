@@ -4,7 +4,15 @@ import Filter from "../../components/Filter";
 import styles from "./style.module.css";
 import { useEffect, useState } from "react";
 
-function Shop({ cartItems, setCartItems, data, setData, setShowToast, showToast }) {
+function Shop({
+  cartItems,
+  setCartItems,
+  data,
+  setData,
+  setShowToast,
+  showToast,
+  setTotalNItemsInCart,
+}) {
   const [filteredData, setFilteredData] = useState(data);
   const [categories, setCategories] = useState([]);
   const [filters, setFilters] = useState({
@@ -117,6 +125,7 @@ function Shop({ cartItems, setCartItems, data, setData, setShowToast, showToast 
             data={data}
             setShowToast={setShowToast}
             showToast={showToast}
+            setTotalNItemsInCart={setTotalNItemsInCart}
           />
         ))}
       </div>

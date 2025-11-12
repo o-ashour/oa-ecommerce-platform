@@ -2,7 +2,14 @@ import imgUrl from "../../assets/images/product_images/Veste en denim classique.
 import styles from "./style.module.css";
 import { sortArray } from "../utils";
 
-export default function Cart({ cartItems, setCartItems, data, setData, setView }) {
+export default function Cart({
+  cartItems,
+  setCartItems,
+  data,
+  setData,
+  setView,
+  setTotalNItemsInCart,
+}) {
   let subtotal = 0.0;
   cartItems.forEach(
     (item) => (subtotal = subtotal + item.price * item.qtyInCart)
@@ -42,13 +49,15 @@ export default function Cart({ cartItems, setCartItems, data, setData, setView }
     const sortedUpdatedCart = sortArray(updatedCart);
     const sortedUpdatedData = sortArray(updatedData);
     setCartItems(sortedUpdatedCart);
+    setTotalNItemsInCart((prevVal) => prevVal - 1);
     setData(sortedUpdatedData);
   }
 
   const handleCheckout = () => {
     setCartItems([]);
-    setData(prevVal => prevVal.filter(item => item.stock > 0))
-  }
+    setTotalNItemsInCart(0);
+    setData((prevVal) => prevVal.filter((item) => item.stock > 0));
+  };
 
   return (
     <div className={styles.cartOuterContainer}>
@@ -111,7 +120,7 @@ export default function Cart({ cartItems, setCartItems, data, setData, setView }
               <div className={styles.continueShoppingBtnWrapper}>
                 <p>
                   or{" "}
-                  <button type="button" onClick={() => setView('shop')}>
+                  <button type="button" onClick={() => setView("shop")}>
                     Continue Shopping
                     <span> &rarr;</span>
                   </button>

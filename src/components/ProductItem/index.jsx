@@ -15,6 +15,7 @@ function ProductItem({
   data,
   setShowToast,
   showToast,
+  setTotalNItemsInCart,
 }) {
   const product = {
     id: productId,
@@ -27,6 +28,7 @@ function ProductItem({
 
   function handleClick() {
     if (product.stock < 1) return;
+    setTotalNItemsInCart(prevVal => prevVal + 1)
     let updatedCart = [];
     for (let i = 0; i < cartItems.length; i++) {
       if (cartItems[i].id === product.id) {

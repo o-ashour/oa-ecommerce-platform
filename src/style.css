@@ -77,38 +77,6 @@ h6 {
 }
 
 /** Global CSS **/
-.toast-wrapper {
-  display: flex;
-  justify-content: center;
-}
-
-.toast {
-  display: flex;
-  column-gap: calc(var(--spacing) * 2);
-  align-items: center;
-  width: var(--container-sm);
-  justify-content: center;
-  margin-top: 1em;
-  height: 40px;
-  background-color: var(--color-white);
-  color: var(--clr-green-accent);
-  position: fixed;
-  top: -80px;
-  transition: top 0.5s;
-  z-index: 99;
-  border-radius: var(--radius-md);
-  padding-block: calc(var(--spacing) * 2);
-  padding-inline: calc(var(--spacing) *4);
-  font-weight: var(--font-weight-semibold);
-  border: 1px solid var(--clr-green-accent);
-}
-
-.toast svg {
-  width: 20px;
-  height: auto;
-  fill: var(--clr-green-accent);
-}
-
 .home-container {
   background-color: var(--color-white);
   position: relative;

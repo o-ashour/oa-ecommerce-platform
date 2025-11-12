@@ -6,22 +6,31 @@ import Header from "./components/Header";
 import Home from "./views/home";
 import Footer from "./components/Footer";
 import json from "./data.json";
-import CheckIcon from "./components/icons/CheckIcon";
+import Toast from "./components/Toast";
 
 // TODO:
-// Add remaining product images
-// Replace placeholder text (i.e. lorem) with actual content
-// fix filter menus so click away closes them, and they aren't both open at once
-// Decide about when to change product stock value: on 'Add to Cart' or 'checkout'
-// Handle states for successful and unsuccessful checkouts (i.e. notify user)
+
+/////////////// ALWAYS ///////////////////////////
+// Clean Code
+
+///////////////////// IMPORTANT ///////////////////////////
+// When two sort menus are open they overlap, make more distinguishable, or have one
+//////collapse
+// Handle state where search yields no results in shop (i.e. 'could not find x' screen)
 // Rounding in subtotal in cart page should be
 ////// to nearest hundredth (i.e. cent)
+// Add Feat to remove items incrementally from cart (numeric, arrows, etc)
+// Handle states for successful and unsuccessful checkouts (i.e. notify user)
+// Add remaining product images
+// Replace placeholder text (i.e. lorem) with actual content
 // Handle empty cart state for cart view
-// Get feedback
+// Check List items are properly indexed in loops
+
+/////////////////////// Less Important ///////////////////////////////
+// Decide about when to change product stock value: on 'Add to Cart' or 'checkout'
 // Improve About page
 // Check extra padding on container/wrapper
 ///// components on small size
-// Check List items are properly indexed in loops
 // Check font size and responsiveness on product
 ////// item headers in cart page
 // letter-spacing variable
@@ -29,65 +38,19 @@ import CheckIcon from "./components/icons/CheckIcon";
 // switch out oklch with hsl
 // replace hero icons with local assets
 
-const dummyCart = [
-  {
-    id: 1,
-    name: "Classic White T-Shirt",
-    category: "Shirts",
-    price: 19.99,
-    stock: 10,
-    image: "",
-  },
-  {
-    id: 2,
-    name: "Blue Denim Jeans",
-    category: "Pants",
-    price: 49.99,
-    stock: 8,
-    image: "",
-  },
-  {
-    id: 3,
-    name: "Red Hoodie",
-    category: "Sweaters",
-    price: 39.99,
-    stock: 7,
-    image: "",
-  },
-];
-
 export default function App() {
   const [view, setView] = useState("home");
   const [cartItems, setCartItems] = useState([]);
   const [showToast, setShowToast] = useState(false);
-
-  const initialData = json || dummyCart;
+  const [totalNItemsInCart, setTotalNItemsInCart] = useState(0);
   const [data, setData] = useState(initialData);
-
-  let totalNItemsInCart = 0;
-
-  // maybe try Array.prototype.reduce() here
-  cartItems.forEach(
-    (item) => (totalNItemsInCart = totalNItemsInCart + item.qtyInCart)
-  );
-
-  // console.log('data:', data, 'cart:', cartItems)
+  const initialData = json;
 
   return (
     <div style={{ minHeight: "100vh", position: "relative" }}>
-      <div className="toast-wrapper">
-        <div
-          className="toast"
-          style={{ top: `${showToast ? "0px" : "-80px"}` }}
-        >
-          <CheckIcon />
-          Added to Cart
-        </div>
-      </div>
-
+      <Toast showToast={showToast} />
       <div className="home-container">
         <Header setView={setView} totalNItemsInCart={totalNItemsInCart} />
-
         <div className="main-container">
           {view === "shop" ? (
             <Shop
@@ -97,6 +60,7 @@ export default function App() {
               setData={setData}
               setShowToast={setShowToast}
               showToast={showToast}
+              setTotalNItemsInCart={setTotalNItemsInCart}
             />
           ) : view === "about" ? (
             <About />
@@ -107,6 +71,7 @@ export default function App() {
               data={data}
               setData={setData}
               setView={setView}
+              setTotalNItemsInCart={setTotalNItemsInCart}
             />
           ) : (
             <Home setView={setView} />
