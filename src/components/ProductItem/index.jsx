@@ -1,5 +1,4 @@
 import styles from "./style.module.css";
-import { sortArray } from "../../views/utils";
 
 function ProductItem({
   productId,
@@ -26,47 +25,54 @@ function ProductItem({
     image: productImgUrl,
   };
 
-  function handleClick() {
-    if (product.stock < 1) return;
-    setTotalNItemsInCart(prevVal => prevVal + 1)
-    let updatedCart = [];
-    for (let i = 0; i < cartItems.length; i++) {
-      if (cartItems[i].id === product.id) {
-        updatedCart = cartItems.filter((item) => item.id !== product.id);
-        updatedCart.push({ ...product, qtyInCart: cartItems[i].qtyInCart + 1 });
-        const sortedUpdatedCart = sortArray(updatedCart);
-        setCartItems(sortedUpdatedCart);
-        break;
-      }
-    }
-    if (updatedCart.length < 1) {
-      updatedCart = cartItems.filter((item) => item.id !== product.id);
-      updatedCart.push({ ...product, qtyInCart: 1 });
-      const sortedUpdatedCart = sortArray(updatedCart);
-      setCartItems(sortedUpdatedCart);
-    }
+  function compareFn(a, b) {
+    return a.id - b.id;
+  }
 
+  function updateCart() {
+    const foundCartItem = cartItems.find((item) => item.id === product.id);
+
+    if (!foundCartItem) {
+      setCartItems((prevVal) =>
+        [...prevVal, { ...product, qtyInCart: 1 }].sort((a, b) => a.id - b.id)
+      );
+    } else {
+      setCartItems((prevVal) =>
+        [
+          ...prevVal.filter((item) => item !== foundCartItem),
+          { ...product, qtyInCart: foundCartItem.qtyInCart + 1 },
+        ].sort(compareFn)
+      );
+    }
+  }
+
+  function updateInventory() {
+    const foundDataItem = data.find((item) => item.id === product.id);
+    setData((prevVal) =>
+      [
+        ...prevVal.filter((item) => item !== foundDataItem),
+        { ...foundDataItem, stock: foundDataItem.stock - 1 },
+      ].sort(compareFn)
+    );
+  }
+
+  function displayNotificationToUser() {
     if (!showToast) {
       setShowToast(true);
       setTimeout(() => setShowToast(false), 3000);
     }
+  }
 
-    function findIndex() {
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].id === product.id) return i;
-      }
-    }
+  function incrementNItemsInCart() {
+    setTotalNItemsInCart((prevVal) => prevVal + 1);
+  }
 
-    const foundIdx = findIndex();
-    const foundItem = data[foundIdx];
-    const updatedItem = { ...foundItem, stock: foundItem.stock - 1 };
-    const updatedData = data.filter((item) => item.id !== product.id);
-    updatedData.push(updatedItem);
-    function compareFn(a, b) {
-      return a.id - b.id;
-    }
-    updatedData.sort(compareFn);
-    setData(updatedData);
+  function handleAddToCart() {
+    if (product.stock < 1) return;
+    incrementNItemsInCart();
+    updateCart();
+    displayNotificationToUser();
+    updateInventory();
   }
 
   const isOutOfStock = product.stock < 1;
@@ -79,9 +85,10 @@ function ProductItem({
           <h3>{productName}</h3>
           <p className={styles.productQty}>In stock: {productQuantity}</p>
           <button
+            id={product.id}
             type="button"
             className={styles.addToCartBtn}
-            onClick={handleClick}
+            onClick={handleAddToCart}
             disabled={isOutOfStock}
           >
             Add to Cart
