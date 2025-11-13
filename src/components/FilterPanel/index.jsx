@@ -22,7 +22,7 @@ function FilterPanel({ setFilters, data, categories, setCategories }) {
           setFilters={setFilters}
         />
         <Filter
-          name="sortBy"
+          name="sort"
           data={data}
           sortByOptions={sortByOptions}
           setSortByOptions={setSortByOptions}

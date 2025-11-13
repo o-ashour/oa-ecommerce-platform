@@ -2,7 +2,7 @@ import styles from "./style.module.css";
 
 function FilterDialog({ name, handleClick, categories, sortByOptions }) {
   const options = {
-    sortBy: sortByOptions,
+    sort: sortByOptions,
     category: categories,
   };
 

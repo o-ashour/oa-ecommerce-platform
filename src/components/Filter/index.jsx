@@ -5,7 +5,7 @@ import styles from "./style.module.css";
 
 const filterTitleOptions = [
   { name: "category", title: "Category" },
-  { name: "sortBy", title: "Sort" },
+  { name: "sort", title: "Sort" },
 ];
 
 function Filter({
@@ -19,34 +19,24 @@ function Filter({
 }) {
   const [showDialog, setShowDialog] = useState(false);
 
+  const setFilterMenuSelection = (state, setState, selectedVal) => {
+    const newState = state.map((item) => {
+      return { ...item, current: item.name === selectedVal };
+    });
+
+    setState(newState);
+  };
+
   const handleClick = (e) => {
+    const selectedVal = e.target.value;
     if (name === "category") {
-      const updatedCategories = categories.map((category) => {
-        if (category.name === e.target.value) {
-          return { ...category, current: true };
-        }
-
-        return { ...category, current: false };
-      });
-
-      setCategories(updatedCategories);
-      setFilters((prevVal) => {
-        return { ...prevVal, category: e.target.value };
-      });
-    } else if (name === "sortBy") {
-      const updatedSortByOptions = sortByOptions.map((sortByOption) => {
-        if (sortByOption.name === e.target.value) {
-          return { ...sortByOption, current: true };
-        }
-
-        return { ...sortByOption, current: false };
-      });
-
-      setSortByOptions(updatedSortByOptions);
-      setFilters((prevVal) => {
-        return { ...prevVal, sort: e.target.value };
-      });
+      setFilterMenuSelection(categories, setCategories, selectedVal);
+    } else if (name === "sort") {
+      setFilterMenuSelection(sortByOptions, setSortByOptions, selectedVal);
     }
+    setFilters((prevVal) => {
+      return { ...prevVal, [name]: selectedVal };
+    });
   };
 
   return (
@@ -65,7 +55,7 @@ function Filter({
           categories={categories}
           name={name}
           data={data}
-          handleClick={(e) => handleClick(e, name)}
+          handleClick={handleClick}
           sortByOptions={sortByOptions}
         />
       )}
