@@ -17,8 +17,6 @@ import Toast from "./components/Toast";
 // When two sort menus are open they overlap, make more distinguishable, or have one
 //////collapse
 // Handle state where search yields no results in shop (i.e. 'could not find x' screen)
-// Rounding in subtotal in cart page should be
-////// to nearest hundredth (i.e. cent)
 // Add Feat to remove items incrementally from cart (numeric, arrows, etc)
 // Handle states for successful and unsuccessful checkouts (i.e. notify user)
 // Add remaining product images
