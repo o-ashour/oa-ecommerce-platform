@@ -1,6 +1,5 @@
 import imgUrl from "../../assets/images/product_images/Veste en denim classique.png";
 import styles from "./style.module.css";
-import { sortArray } from "../utils";
 
 export default function Cart({
   cartItems,
@@ -10,47 +9,65 @@ export default function Cart({
   setView,
   setTotalNItemsInCart,
 }) {
-  let subtotal = 0.0;
-  cartItems.forEach(
-    (item) => (subtotal = subtotal + item.price * item.qtyInCart)
-  );
-  const roundedSubtotal = Math.round(subtotal).toFixed(2);
+  function calculateSubtotal() {
+    const subtotal = cartItems.reduce(
+      (total, current) => total + current.qtyInCart * current.price,
+      0
+    );
+    return (Math.round(subtotal * 100) / 100).toFixed(2);
+  }
+  const subtotal = calculateSubtotal();
 
-  function handleClick(cartItemToRemove) {
-    let updatedCart = [];
-    let updatedData = [];
-    let foundItem = {};
-    let foundItemInData = {};
-    for (let i = 0; i < cartItems.length; i++) {
-      if (cartItems[i].id === cartItemToRemove.id) {
-        foundItem = { ...cartItems[i] };
-        break;
-      }
-    }
-    for (let i = 0; i < data.length; i++) {
-      if (data[i].id === cartItemToRemove.id) {
-        foundItemInData = { ...data[i] };
-        break;
-      }
-    }
-    updatedCart = cartItems.filter((item) => item.id !== foundItem.id);
-    updatedData = data.filter((item) => item.id !== foundItemInData.id);
-    updatedData = [
-      ...updatedData,
-      { ...foundItemInData, stock: foundItemInData.stock + 1 },
-    ];
-    if (foundItem.qtyInCart > 1) {
-      updatedCart = [
-        ...updatedCart,
-        { ...foundItem, qtyInCart: foundItem.qtyInCart - 1 },
-      ];
-    }
+  function compareFn(a, b) {
+    return a.id - b.id;
+  }
 
-    const sortedUpdatedCart = sortArray(updatedCart);
-    const sortedUpdatedData = sortArray(updatedData);
-    setCartItems(sortedUpdatedCart);
+  function decerementTotalNItemsInCart() {
     setTotalNItemsInCart((prevVal) => prevVal - 1);
-    setData(sortedUpdatedData);
+  }
+
+  function decrementCartItem(cartItemToRemove) {
+    setCartItems((prevVal) =>
+      [
+        ...prevVal.filter((item) => item !== cartItemToRemove),
+        { ...cartItemToRemove, qtyInCart: cartItemToRemove.qtyInCart - 1 },
+      ].sort(compareFn)
+    );
+  }
+
+  function removeCartItem(cartItemToRemove) {
+    setCartItems((prevVal) =>
+      prevVal.filter((item) => item !== cartItemToRemove).sort(compareFn)
+    );
+  }
+
+  function updateCart(cartItemToRemove) {
+    const foundCartItem = cartItems.find((item) => item === cartItemToRemove);
+    if (foundCartItem.qtyInCart > 1) {
+      decrementCartItem(foundCartItem);
+    } else {
+      removeCartItem(foundCartItem);
+    }
+  }
+
+  function incrementItemInStock(cartItemToRemove) {
+    setData((prevVal) =>
+      [
+        ...prevVal.filter((item) => item.id !== cartItemToRemove.id),
+        { ...cartItemToRemove, stock: cartItemToRemove.stock + 1 },
+      ].sort(compareFn)
+    );
+  }
+
+  function updateInventory(cartItemToRemove) {
+    const foundDataItem = data.find((item) => item.id === cartItemToRemove.id);
+    incrementItemInStock(foundDataItem);
+  }
+
+  function handleRemoveCartItem(cartItemToRemove) {
+    decerementTotalNItemsInCart();
+    updateCart(cartItemToRemove);
+    updateInventory(cartItemToRemove);
   }
 
   const handleCheckout = () => {
@@ -91,7 +108,8 @@ export default function Cart({
                               }
                             >
                               <button
-                                onClick={() => handleClick(cartItem)}
+                                id={cartItem.id}
+                                onClick={() => handleRemoveCartItem(cartItem)}
                                 type="button"
                               >
                                 Remove
@@ -109,7 +127,7 @@ export default function Cart({
             <div className={styles.cartFinalizeWrapper}>
               <div className={styles.cartSubtotalWrapper}>
                 <p>Subtotal</p>
-                <p>${roundedSubtotal}</p>
+                <p>${subtotal}</p>
               </div>
               <p className={styles.cartSubtotalSubtitle}>
                 Shipping and taxes calculated at checkout.
