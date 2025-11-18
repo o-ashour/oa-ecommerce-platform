@@ -3,6 +3,9 @@ import HamburgerIcon from "../icons/HamburgerIcon";
 import { ShoppingBagIcon } from "@heroicons/react/24/outline";
 import NavDialog from "./Dialog";
 import styles from "./style.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { changeView } from "../../viewSlice";
+import { getTotalNCartItems } from "../../utils";
 
 const navigation = [
   { name: "Home", viewName: "home" },
@@ -10,8 +13,12 @@ const navigation = [
   { name: "About", viewName: "about" },
 ];
 
-function Nav({ setView, totalNItemsInCart }) {
+function Nav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart);
+
+  const totalNCartItems = getTotalNCartItems(cart);
 
   return (
     <div className={styles.navContainer}>
@@ -23,27 +30,29 @@ function Nav({ setView, totalNItemsInCart }) {
         </div>
         <div className={styles.mainNavWrapper}>
           <div className={styles.logoWrapper}>
-            <button onClick={() => setView("home")}>O&A</button>
+            <button onClick={() => dispatch(changeView("home"))}>O&A</button>
           </div>
           <div className={styles.menuLarge}>
             {navigation.map((item) => (
-              <button key={item.name} onClick={() => setView(item.viewName)}>
+              <button
+                key={item.name}
+                onClick={() => dispatch(changeView(item.viewName))}
+              >
                 {item.name}
               </button>
             ))}
           </div>
         </div>
         <div className={styles.cartIconWrapper}>
-          <button onClick={() => setView("cart")}>
+          <button onClick={() => dispatch(changeView("cart"))}>
             <ShoppingBagIcon />
           </button>
-          <span>{totalNItemsInCart}</span>
+          <span>{totalNCartItems}</span>
         </div>
       </nav>
       <NavDialog
         mobileMenuOpen={mobileMenuOpen}
         setMobileMenuOpen={setMobileMenuOpen}
-        setView={setView}
         navigation={navigation}
       />
     </div>

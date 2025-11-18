@@ -1,9 +1,13 @@
+import { useDispatch } from "react-redux";
 import ImageGrid from "../../components/ImageGrid";
 import Newsletter from "../../components/Newsletter";
 import Testimonial from "../../components/Testimonial";
 import styles from "./style.module.css";
+import { changeView } from "../../viewSlice";
 
-function Home({ setView }) {
+function Home() {
+  const dispatch = useDispatch();
+
   return (
     <>
       <section className={styles.collectionPreview}>
@@ -22,7 +26,7 @@ function Home({ setView }) {
                 <button
                   type="button"
                   className={styles.shopCollectionBtn}
-                  onClick={() => setView("shop")}
+                  onClick={() => dispatch(changeView("shop"))}
                 >
                   Shop Collection
                 </button>

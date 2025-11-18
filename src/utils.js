@@ -15,3 +15,18 @@ export function getProductCategoriesFromData(initialCategory, data) {
   }
   return arr;
 }
+
+export function getTotalNCartItems(cart) {
+  return cart.reduce(
+    (totalVal, currentVal) => totalVal + currentVal.qtyInCart,
+    0
+  );
+}
+
+export function calculateSubtotal(cart) {
+  const subtotal = cart.reduce(
+    (total, current) => total + current.qtyInCart * current.price,
+    0
+  );
+  return (Math.round(subtotal * 100) / 100).toFixed(2);
+}

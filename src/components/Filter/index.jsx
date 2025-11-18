@@ -10,7 +10,6 @@ const filterTitleOptions = [
 
 function Filter({
   name,
-  data,
   categories,
   setCategories,
   setFilters,
@@ -54,7 +53,6 @@ function Filter({
         <FilterDialog
           categories={categories}
           name={name}
-          data={data}
           handleClick={handleClick}
           sortByOptions={sortByOptions}
         />

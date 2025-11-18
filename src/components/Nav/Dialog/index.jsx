@@ -1,7 +1,10 @@
+import { useDispatch } from "react-redux";
 import XMarkIcon from "../../icons/XMarkIcon";
 import styles from "./style.module.css";
+import { changeView } from "../../../viewSlice";
 
-function NavDialog({ mobileMenuOpen, setMobileMenuOpen, setView, navigation }) {
+function NavDialog({ mobileMenuOpen, setMobileMenuOpen, navigation }) {
+  const dispatch = useDispatch();
   return (
     <dialog
       open={mobileMenuOpen}
@@ -13,7 +16,7 @@ function NavDialog({ mobileMenuOpen, setMobileMenuOpen, setView, navigation }) {
         <div className={styles.dialogPanelHeader}>
           <button
             className={styles.logoBtnSmall}
-            onClick={() => setView("home")}
+            onClick={() => dispatch(changeView("home"))}
           >
             O&A
           </button>
@@ -33,7 +36,7 @@ function NavDialog({ mobileMenuOpen, setMobileMenuOpen, setView, navigation }) {
                 <button
                   key={item.name}
                   onClick={() => {
-                    setView(item.viewName);
+                    dispatch(changeView(item.viewName));
                     setMobileMenuOpen(false);
                   }}
                 >

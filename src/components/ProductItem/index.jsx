@@ -1,4 +1,6 @@
+import { useDispatch } from "react-redux";
 import styles from "./style.module.css";
+import { addCartItem } from "../../cartSlice";
 
 function ProductItem({
   productId,
@@ -8,14 +10,11 @@ function ProductItem({
   productPrice,
   productQuantity,
   productCategory,
-  cartItems,
-  setCartItems,
-  setData,
-  data,
   setShowToast,
   showToast,
-  setTotalNItemsInCart,
 }) {
+  const dispatch = useDispatch();
+
   const product = {
     id: productId,
     name: productName,
@@ -25,37 +24,6 @@ function ProductItem({
     image: productImgUrl,
   };
 
-  function compareFn(a, b) {
-    return a.id - b.id;
-  }
-
-  function updateCart() {
-    const foundCartItem = cartItems.find((item) => item.id === product.id);
-
-    if (!foundCartItem) {
-      setCartItems((prevVal) =>
-        [...prevVal, { ...product, qtyInCart: 1 }].sort((a, b) => a.id - b.id)
-      );
-    } else {
-      setCartItems((prevVal) =>
-        [
-          ...prevVal.filter((item) => item !== foundCartItem),
-          { ...product, qtyInCart: foundCartItem.qtyInCart + 1 },
-        ].sort(compareFn)
-      );
-    }
-  }
-
-  function updateInventory() {
-    const foundDataItem = data.find((item) => item.id === product.id);
-    setData((prevVal) =>
-      [
-        ...prevVal.filter((item) => item !== foundDataItem),
-        { ...foundDataItem, stock: foundDataItem.stock - 1 },
-      ].sort(compareFn)
-    );
-  }
-
   function displayNotificationToUser() {
     if (!showToast) {
       setShowToast(true);
@@ -63,16 +31,10 @@ function ProductItem({
     }
   }
 
-  function incrementNItemsInCart() {
-    setTotalNItemsInCart((prevVal) => prevVal + 1);
-  }
-
   function handleAddToCart() {
     if (product.stock < 1) return;
-    incrementNItemsInCart();
-    updateCart();
+    dispatch(addCartItem(product));
     displayNotificationToUser();
-    updateInventory();
   }
 
   const isOutOfStock = product.stock < 1;

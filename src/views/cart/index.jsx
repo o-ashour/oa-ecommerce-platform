@@ -1,79 +1,23 @@
+import { useDispatch, useSelector } from "react-redux";
 import imgUrl from "../../assets/images/product_images/Veste en denim classique.png";
+import { changeView } from "../../viewSlice";
 import styles from "./style.module.css";
+import { initializeCart, removeCartItem } from "../../cartSlice";
+import { calculateSubtotal } from "../../utils";
+import { updateStockOnCheckout } from "../../productsSlice";
 
-export default function Cart({
-  cartItems,
-  setCartItems,
-  data,
-  setData,
-  setView,
-  setTotalNItemsInCart,
-}) {
-  function calculateSubtotal() {
-    const subtotal = cartItems.reduce(
-      (total, current) => total + current.qtyInCart * current.price,
-      0
-    );
-    return (Math.round(subtotal * 100) / 100).toFixed(2);
-  }
-  const subtotal = calculateSubtotal();
-
-  function compareFn(a, b) {
-    return a.id - b.id;
-  }
-
-  function decerementTotalNItemsInCart() {
-    setTotalNItemsInCart((prevVal) => prevVal - 1);
-  }
-
-  function decrementCartItem(cartItemToRemove) {
-    setCartItems((prevVal) =>
-      [
-        ...prevVal.filter((item) => item !== cartItemToRemove),
-        { ...cartItemToRemove, qtyInCart: cartItemToRemove.qtyInCart - 1 },
-      ].sort(compareFn)
-    );
-  }
-
-  function removeCartItem(cartItemToRemove) {
-    setCartItems((prevVal) =>
-      prevVal.filter((item) => item !== cartItemToRemove).sort(compareFn)
-    );
-  }
-
-  function updateCart(cartItemToRemove) {
-    const foundCartItem = cartItems.find((item) => item === cartItemToRemove);
-    if (foundCartItem.qtyInCart > 1) {
-      decrementCartItem(foundCartItem);
-    } else {
-      removeCartItem(foundCartItem);
-    }
-  }
-
-  function incrementItemInStock(cartItemToRemove) {
-    setData((prevVal) =>
-      [
-        ...prevVal.filter((item) => item.id !== cartItemToRemove.id),
-        { ...cartItemToRemove, stock: cartItemToRemove.stock + 1 },
-      ].sort(compareFn)
-    );
-  }
-
-  function updateInventory(cartItemToRemove) {
-    const foundDataItem = data.find((item) => item.id === cartItemToRemove.id);
-    incrementItemInStock(foundDataItem);
-  }
+export default function Cart() {
+  const cart = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+  const subtotal = calculateSubtotal(cart);
 
   function handleRemoveCartItem(cartItemToRemove) {
-    decerementTotalNItemsInCart();
-    updateCart(cartItemToRemove);
-    updateInventory(cartItemToRemove);
+    dispatch(removeCartItem(cartItemToRemove));
   }
 
   const handleCheckout = () => {
-    setCartItems([]);
-    setTotalNItemsInCart(0);
-    setData((prevVal) => prevVal.filter((item) => item.stock > 0));
+    dispatch(initializeCart());
+    dispatch(updateStockOnCheckout(cart));
   };
 
   return (
@@ -89,7 +33,7 @@ export default function Cart({
               <div className={styles.productItemsSection}>
                 <div className={styles.productItemsWrapper}>
                   <ul>
-                    {cartItems.map((cartItem) => (
+                    {cart.map((cartItem) => (
                       <li key={cartItem.id}>
                         <div className={styles.productItemImageWrapper}>
                           <img alt="product image" src={imgUrl} />
@@ -138,7 +82,10 @@ export default function Cart({
               <div className={styles.continueShoppingBtnWrapper}>
                 <p>
                   or{" "}
-                  <button type="button" onClick={() => setView("shop")}>
+                  <button
+                    type="button"
+                    onClick={() => dispatch(changeView("shop"))}
+                  >
                     Continue Shopping
                     <span> &rarr;</span>
                   </button>

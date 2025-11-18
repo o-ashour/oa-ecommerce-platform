@@ -3,18 +3,12 @@ import ProductItem from "../../components/ProductItem";
 import styles from "./style.module.css";
 import { useEffect, useState } from "react";
 import FilterPanel from "../../components/FilterPanel";
-import { getProductCategoriesFromData } from "../utils";
+import { getProductCategoriesFromData } from "../../utils";
+import { useSelector } from "react-redux";
 
-function Shop({
-  cartItems,
-  setCartItems,
-  data,
-  setData,
-  setShowToast,
-  showToast,
-  setTotalNItemsInCart,
-}) {
-  const [filteredData, setFilteredData] = useState(data);
+function Shop({ setShowToast, showToast }) {
+  const products = useSelector(state => state.products);
+  const [filteredData, setFilteredData] = useState(products);
   const [filters, setFilters] = useState({
     name: "",
     category: "All",
@@ -27,11 +21,11 @@ function Shop({
   useEffect(() => {
     const productCategories = getProductCategoriesFromData(
       { name: "All", current: true },
-      data
+      products
     );
 
     setCategories(productCategories);
-  }, [data]);
+  }, [products]);
 
   useEffect(() => {
     function sortByComparisonFn(a, b) {
@@ -44,26 +38,25 @@ function Shop({
       }
     }
     function isNameMatch(item) {
-      return item.name.toLowerCase().includes(filters.name.trim().toLowerCase());
+      return item.name
+        .toLowerCase()
+        .includes(filters.name.trim().toLowerCase());
     }
     let filteredArr = [];
     if (filters.category === "All") {
-      filteredArr = data.filter(isNameMatch);
+      filteredArr = products.filter(isNameMatch);
     } else {
-      filteredArr = data.filter(
-        (item) =>
-          isNameMatch(item) &&
-          item.category === filters.category
+      filteredArr = products.filter(
+        (item) => isNameMatch(item) && item.category === filters.category
       );
     }
     setFilteredData(filteredArr.sort(sortByComparisonFn));
-  }, [filters, data]);
+  }, [filters, products]);
 
   return (
     <div className={styles.shopContainerOuter}>
       <FilterPanel
         setFilters={setFilters}
-        data={data}
         categories={categories}
         setCategories={setCategories}
       />
@@ -79,13 +72,8 @@ function Shop({
             productPrice={product.price}
             productQuantity={product.stock}
             productCategory={product.category}
-            cartItems={cartItems}
-            setCartItems={setCartItems}
-            setData={setData}
-            data={data}
             setShowToast={setShowToast}
             showToast={showToast}
-            setTotalNItemsInCart={setTotalNItemsInCart}
           />
         ))}
       </div>
