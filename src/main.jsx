@@ -11,7 +11,7 @@ import productsReducer from "./productsSlice.js";
 const store = configureStore({
   reducer: { view: viewReducer, cart: cartReducer, products: productsReducer },
 });
-
+// throwing in a comment to test git
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
