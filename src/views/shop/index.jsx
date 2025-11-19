@@ -1,4 +1,3 @@
-import imgUrl from "../../assets/images/product_images/Veste en denim classique.png";
 import ProductItem from "../../components/ProductItem";
 import styles from "./style.module.css";
 import { useEffect, useState } from "react";
@@ -7,7 +6,7 @@ import { getProductCategoriesFromData } from "../../utils";
 import { useSelector } from "react-redux";
 
 function Shop({ setShowToast, showToast }) {
-  const products = useSelector(state => state.products);
+  const products = useSelector((state) => state.products);
   const [filteredData, setFilteredData] = useState(products);
   const [filters, setFilters] = useState({
     name: "",
@@ -66,8 +65,8 @@ function Shop({ setShowToast, showToast }) {
           <ProductItem
             key={product.id}
             productId={product.id}
-            productImgAlt="Front of men's Classic Denim Jacket."
-            productImgUrl={imgUrl}
+            productImgAlt="product image"
+            productImgUrl={product.image}
             productName={product.name}
             productPrice={product.price}
             productQuantity={product.stock}
