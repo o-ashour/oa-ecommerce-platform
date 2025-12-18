@@ -17,31 +17,42 @@ export default function App() {
   useEffect(() => {
     async function createCartSession() {
       const url = `${import.meta.env.VITE_API_URL}/cart`;
-      console.log(url);
       const response = await fetch(url, {
         method: "POST",
         credentials: "include",
       });
-      console.log(response);
-      return;
-      // return await response.json();
+      if (!response.ok) {
+        return { error: { status: response.status }};
+      }
+      return await response.json();
     }
 
     async function getCartFromSession() {
       const url = `${import.meta.env.VITE_API_URL}/cart`;
-      console.log(url);
       const response = await fetch(url, {
         credentials: "include",
       });
-      console.log(response);
-      if (response.status === 404) return await createCartSession();
-      return;
-      // return await response.json();
+      if (!response.ok) {
+        return { error: { status: response.status }};
+      }
+      return await response.json();
     }
 
     async function initializeCartStateFromSession() {
-      const cartSessionData = await getCartFromSession();
-      dispatch(initializeCart(cartSessionData));
+      const getCartRes = await getCartFromSession();
+      if (getCartRes.error) {
+        const createCartRes = await createCartSession();
+        if (createCartRes.error) {
+          console.log('Something went wrong', 'createCartRes:', createCartRes, 'getCartRes:', getCartRes)
+          return;
+        } else {
+          dispatch(initializeCart(createCartRes));
+        }
+      } else {
+        dispatch(initializeCart(getCartRes));
+      }
+      // const cartSessionData = await getCartFromSession();
+      // dispatch(initializeCart(cartSessionData));
     }
 
     initializeCartStateFromSession();
