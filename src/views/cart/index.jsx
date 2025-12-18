@@ -13,11 +13,19 @@ export default function Cart() {
 
   async function handleRemoveCartItem(cartItemToRemove) {
     dispatch(removeCartItem(cartItemToRemove));
-    await fetch(
-      `${import.meta.env.VITE_API_URL}/cart/items/${cartItemToRemove.id}`,
-      { method: "DELETE", credentials: "include" }
+    const cartInSession = JSON.parse(sessionStorage.getItem("cart"));
+    const filteredCartInSession = cartInSession.filter(
+      (item) => item.id !== cartItemToRemove.id
     );
-    // TODO: Error handling
+    sessionStorage.setItem(
+      "cart",
+      cartItemToRemove.qtyInCart > 1
+        ? JSON.stringify([
+            ...filteredCartInSession,
+            { ...cartItemToRemove, qtyInCart: cartItemToRemove.qtyInCart - 1 },
+          ])
+        : JSON.stringify(filteredCartInSession)
+    );
   }
 
   const handleCheckout = async () => {
@@ -36,6 +44,7 @@ export default function Cart() {
     }
     setCartState("paid");
     dispatch(initializeCart([]));
+    sessionStorage.removeItem("cart");
   };
 
   return (

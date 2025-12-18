@@ -38,26 +38,36 @@ function ProductItem({
     displayNotificationToUser();
 
     const addCartItemToSession = async () => {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/cart/items`,
-        {
-          method: "POST",
-          headers: {
-            "Content-type": "Application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify(product),
-        }
-      );
-      return response.status;
+      const cartInSession = JSON.parse(sessionStorage.getItem("cart"));
+      if (cartInSession) {
+        sessionStorage.setItem(
+          "cart",
+          JSON.stringify([...cartInSession, { ...product, qtyInCart: 1 }])
+        );
+      } else {
+        sessionStorage.setItem(
+          "cart",
+          JSON.stringify([{ ...product, qtyInCart: 1 }])
+        );
+      }
     };
 
     const updateCartItemInSession = async () => {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/cart/items/${product.id}`,
-        { method: "PUT", credentials: "include" }
+      const cartInSession = JSON.parse(sessionStorage.getItem("cart"));
+
+      const foundProduct = cartInSession.find((item) => item.id === product.id);
+
+      const filteredCartInSession = cartInSession.filter(
+        (item) => item.id !== product.id
       );
-      return response.status;
+
+      sessionStorage.setItem(
+        "cart",
+        JSON.stringify([
+          ...filteredCartInSession,
+          { ...foundProduct, qtyInCart: foundProduct.qtyInCart + 1 },
+        ])
+      );
     };
 
     if (cart.find((item) => item.id === product.id)) {
