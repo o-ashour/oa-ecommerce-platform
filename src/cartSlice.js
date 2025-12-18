@@ -26,8 +26,8 @@ const cartSlice = createSlice({
         return state.filter((item) => item !== foundProduct);
       }
     },
-    initializeCart() {
-      return [];
+    initializeCart(state, action) {
+      return action.payload;
     },
   },
 });

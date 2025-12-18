@@ -3,7 +3,8 @@ import styles from "./style.module.css";
 import { useEffect, useState } from "react";
 import FilterPanel from "../../components/FilterPanel";
 import { getProductCategoriesFromData } from "../../utils";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { initializeProducts } from "../../productsSlice";
 
 function Shop({ setShowToast, showToast }) {
   const products = useSelector((state) => state.products);
@@ -16,6 +17,13 @@ function Shop({ setShowToast, showToast }) {
   const [categories, setCategories] = useState([
     { name: "All", current: true },
   ]);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/products`)
+      .then((res) => res.json())
+      .then((data) => dispatch(initializeProducts(data)));
+  }, [dispatch]);
 
   useEffect(() => {
     const productCategories = getProductCategoriesFromData(

@@ -3,7 +3,6 @@ import { changeView } from "../../viewSlice";
 import styles from "./style.module.css";
 import { initializeCart, removeCartItem } from "../../cartSlice";
 import { calculateSubtotal } from "../../utils";
-import { updateStockOnCheckout } from "../../productsSlice";
 import { useState } from "react";
 
 export default function Cart() {
@@ -12,14 +11,31 @@ export default function Cart() {
   const dispatch = useDispatch();
   const subtotal = calculateSubtotal(cart);
 
-  function handleRemoveCartItem(cartItemToRemove) {
+  async function handleRemoveCartItem(cartItemToRemove) {
     dispatch(removeCartItem(cartItemToRemove));
+    await fetch(
+      `${import.meta.env.VITE_API_URL}/cart/items/${cartItemToRemove.id}`,
+      { method: "DELETE", credentials: "include" }
+    );
+    // TODO: Error handling
   }
 
-  const handleCheckout = () => {
-    dispatch(initializeCart());
-    dispatch(updateStockOnCheckout(cart));
+  const handleCheckout = async () => {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/checkout`, {
+      method: "POST",
+      headers: { "Content-type": "Application/json" },
+      body: JSON.stringify({
+        cart,
+        subtotal,
+      }),
+      credentials: "include",
+    });
+    if (!response.ok) {
+      setCartState("error");
+      return;
+    }
     setCartState("paid");
+    dispatch(initializeCart([]));
   };
 
   return (
@@ -45,11 +61,15 @@ export default function Cart() {
                 </p>
               </div>
             </div>
-          ) : cartState === "paid" ? (
+          ) : cartState === "paid" || cartState === "error" ? (
             <div className={styles.cartInnerWrapper}>
               <div className={styles.cartMain}>
                 <div className={styles.cartHeaderWrapper}>
-                  <h1>Your order has been made!</h1>
+                  <h1>
+                    {cartState === "paid"
+                      ? "Your order has been made!"
+                      : "Something went wrong"}
+                  </h1>
                 </div>
               </div>
               <div className={styles.continueShoppingBtnWrapper}>

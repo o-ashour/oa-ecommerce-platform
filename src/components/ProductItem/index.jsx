@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./style.module.css";
 import { addCartItem } from "../../cartSlice";
 
@@ -14,6 +14,7 @@ function ProductItem({
   showToast,
 }) {
   const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart);
 
   const product = {
     id: productId,
@@ -31,10 +32,39 @@ function ProductItem({
     }
   }
 
-  function handleAddToCart() {
+  async function handleAddToCart() {
     if (product.stock < 1) return;
     dispatch(addCartItem(product));
     displayNotificationToUser();
+
+    const addCartItemToSession = async () => {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/cart/items`,
+        {
+          method: "POST",
+          headers: {
+            "Content-type": "Application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(product),
+        }
+      );
+      return response.status;
+    };
+
+    const updateCartItemInSession = async () => {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/cart/items/${product.id}`,
+        { method: "PUT", credentials: "include" }
+      );
+      return response.status;
+    };
+
+    if (cart.find((item) => item.id === product.id)) {
+      updateCartItemInSession();
+    } else {
+      addCartItemToSession();
+    }
   }
 
   const isOutOfStock = product.stock < 1;
