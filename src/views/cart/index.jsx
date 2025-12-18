@@ -29,6 +29,7 @@ export default function Cart() {
   }
 
   const handleCheckout = async () => {
+    setCartState("loading");
     const response = await fetch(`${import.meta.env.VITE_API_URL}/checkout`, {
       method: "POST",
       headers: { "Content-type": "Application/json" },
@@ -70,13 +71,17 @@ export default function Cart() {
                 </p>
               </div>
             </div>
-          ) : cartState === "paid" || cartState === "error" ? (
+          ) : cartState === "paid" ||
+            cartState === "error" ||
+            cartState === "loading" ? (
             <div className={styles.cartInnerWrapper}>
               <div className={styles.cartMain}>
                 <div className={styles.cartHeaderWrapper}>
                   <h1>
                     {cartState === "paid"
                       ? "Your order has been made!"
+                      : cartState === "loading"
+                      ? "One moment..."
                       : "Something went wrong"}
                   </h1>
                 </div>

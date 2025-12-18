@@ -17,12 +17,20 @@ function Shop({ setShowToast, showToast }) {
   const [categories, setCategories] = useState([
     { name: "All", current: true },
   ]);
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/products`)
-      .then((res) => res.json())
-      .then((data) => dispatch(initializeProducts(data)));
+    const getProducts = async () => {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/products`);
+      if (!response.ok) return setIsError(true);
+      const data = await response.json();
+      dispatch(initializeProducts(data));
+    };
+    setIsLoading(true);
+    getProducts();
+    setIsLoading(false);
   }, [dispatch]);
 
   useEffect(() => {
@@ -69,20 +77,26 @@ function Shop({ setShowToast, showToast }) {
       />
 
       <div className={styles.shopContainerInner}>
-        {filteredData.map((product) => (
-          <ProductItem
-            key={product.id}
-            productId={product.id}
-            productImgAlt="product image"
-            productImgUrl={product.image}
-            productName={product.name}
-            productPrice={product.price}
-            productQuantity={product.stock}
-            productCategory={product.category}
-            setShowToast={setShowToast}
-            showToast={showToast}
-          />
-        ))}
+        {isLoading ? (
+          <h1>Loading...</h1>
+        ) : isError ? (
+          <h1>Something went wrong</h1>
+        ) : (
+          filteredData.map((product) => (
+            <ProductItem
+              key={product.id}
+              productId={product.id}
+              productImgAlt="product image"
+              productImgUrl={product.image}
+              productName={product.name}
+              productPrice={product.price}
+              productQuantity={product.stock}
+              productCategory={product.category}
+              setShowToast={setShowToast}
+              showToast={showToast}
+            />
+          ))
+        )}
       </div>
     </div>
   );
