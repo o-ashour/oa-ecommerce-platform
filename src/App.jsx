@@ -16,19 +16,27 @@ export default function App() {
 
   useEffect(() => {
     async function createCartSession() {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/cart`, {
+      const url = `${import.meta.env.VITE_API_URL}/cart`;
+      console.log(url);
+      const response = await fetch(url, {
         method: "POST",
         credentials: "include",
       });
-      return await response.json();
+      console.log(response);
+      return;
+      // return await response.json();
     }
 
     async function getCartFromSession() {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/cart`, {
+      const url = `${import.meta.env.VITE_API_URL}/cart`;
+      console.log(url);
+      const response = await fetch(url, {
         credentials: "include",
       });
+      console.log(response);
       if (response.status === 404) return await createCartSession();
-      return await response.json();
+      return;
+      // return await response.json();
     }
 
     async function initializeCartStateFromSession() {
