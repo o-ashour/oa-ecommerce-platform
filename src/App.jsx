@@ -40,8 +40,10 @@ export default function App() {
 
     async function initializeCartStateFromSession() {
       const getCartRes = await getCartFromSession();
+      console.log(getCartRes)
       if (getCartRes.error) {
         const createCartRes = await createCartSession();
+        console.log(createCartRes)
         if (createCartRes.error) {
           console.log('Something went wrong', 'createCartRes:', createCartRes, 'getCartRes:', getCartRes)
           return;
