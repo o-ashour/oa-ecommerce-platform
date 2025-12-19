@@ -41,11 +41,11 @@ export default function Cart() {
     });
     if (!response.ok) {
       setCartState("error");
-      return;
+    } else {
+      setCartState("paid");
+      dispatch(initializeCart([]));
+      sessionStorage.removeItem("cart");
     }
-    setCartState("paid");
-    dispatch(initializeCart([]));
-    sessionStorage.removeItem("cart");
   };
 
   return (
