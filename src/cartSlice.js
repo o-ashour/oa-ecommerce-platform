@@ -12,7 +12,11 @@ const cartSlice = createSlice({
       if (!foundProduct) {
         state.push({ ...selectedProduct, qtyInCart: 1 });
       } else {
-        state[foundProductIdx].qtyInCart++;
+        if (foundProduct.qtyInCart <= foundProduct.stock) {
+          state[foundProductIdx].qtyInCart = foundProduct.stock;
+        } else {
+          state[foundProductIdx].qtyInCart++;
+        }
       }
     },
     removeCartItem(state, action) {

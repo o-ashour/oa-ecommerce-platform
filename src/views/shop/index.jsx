@@ -65,7 +65,7 @@ function Shop({ setShowToast, showToast }) {
         (item) => isNameMatch(item) && item.category === filters.category
       );
     }
-    setFilteredData(filteredArr.sort(sortByComparisonFn));
+    setFilteredData(filteredArr.filter(product => product.stock > 0).sort(sortByComparisonFn));
   }, [filters, products]);
 
   return (

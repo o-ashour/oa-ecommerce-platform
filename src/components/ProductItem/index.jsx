@@ -65,7 +65,7 @@ function ProductItem({
         "cart",
         JSON.stringify([
           ...filteredCartInSession,
-          { ...foundProduct, qtyInCart: foundProduct.qtyInCart + 1 },
+          { ...foundProduct, qtyInCart: foundProduct.qtyInCart >= foundProduct.stock ? foundProduct.stock : foundProduct.qtyInCart + 1 },
         ])
       );
     };
